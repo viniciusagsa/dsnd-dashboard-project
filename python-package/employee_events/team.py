@@ -2,7 +2,7 @@
 from employee_events.query_base import QueryBase
 
 # Import dependencies for sql execution
-from sql_execution import query, QueryMixin
+from employee_events.sql_execution import query, QueryMixin
 
 # Create a subclass of QueryBase
 # called  `Team`
@@ -30,7 +30,7 @@ class Team(QueryBase, QueryMixin):
                 team_id
             FROM {self.name};
         """
-        return self.query(query).fetchall()
+        return self.query(query)
     
 
     # Define a `username` method
@@ -51,7 +51,7 @@ class Team(QueryBase, QueryMixin):
             FROM {self.name}
             WHERE team_id = {id};
         """
-        return self.query(query).fetchall()
+        return self.query(query)
 
 
     # Below is method with an SQL query

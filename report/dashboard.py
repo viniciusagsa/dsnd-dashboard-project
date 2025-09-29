@@ -7,7 +7,7 @@ from employee_events.employee import Employee
 from employee_events.team import Team
 
 # import the load_model function from the utils.py file
-from report.utils import load_model
+from utils import load_model
 
 """
 Below, we import the parent classes
@@ -31,19 +31,19 @@ class ReportDropdown(Dropdown):
     # Overwrite the build_component method
     # ensuring it has the same parameters
     # as the Report parent class's method
-    def build_component(self, model, entity_id=None):
+    def build_component(self, entity_id, model):
         #  Set the `label` attribute so it is set
         #  to the `name` attribute for the model
-        self.label = model.name.capitalize()
+        self.label = model.name
         
         # Return the output from the
         # parent class's build_component method
-        return super().build_component(model, entity_id)
+        return super().build_component(entity_id, model)
     
     # Overwrite the `component_data` method
     # Ensure the method uses the same parameters
     # as the parent class method
-    def component_data(self, model, entity_id=None):
+    def component_data(self, entity_id, model):
         # Using the model argument
         # call the employee_events method
         # that returns the user-type's
@@ -58,12 +58,12 @@ class Header(BaseComponent):
     # Overwrite the `build_component` method
     # Ensure the method has the same parameters
     # as the parent class
-    def build_component(self, model, entity_id):
+    def build_component(self, entity_id, model):
         
         # Using the model argument for this method
         # return a fasthtml H1 objects
         # containing the model's name attribute
-        return H1(f"{model.name.capitalize()} Dashboard")
+        return H1(f'{model.name} Dashboard')
           
 
 # Create a subclass of base_components/MatplotlibViz
@@ -72,7 +72,7 @@ class LineChart(MatplotlibViz):
     
     # Overwrite the parent class's `visualization`
     # method. Use the same parameters as the parent
-    def visualization(self, model, asset_id):
+    def visualization(self, asset_id, model):
     
 
         # Pass the `asset_id` argument to
@@ -115,12 +115,12 @@ class LineChart(MatplotlibViz):
         # the border color and font color to black. 
         # Reference the base_components/matplotlib_viz file 
         # to inspect the supported keyword arguments
-        self.set_axis_styling(ax, border_color='black', font_color='black')
+        self.set_axis_styling(ax)
         
         # Set title and labels for x and y axis
-        ax.set_title('Cumulative Event Counts', fontsize=20)
-        ax.set_xlabel('Date', fontsize=16)
-        ax.set_ylabel('Cumulative Count', fontsize=16)
+        ax.set_title('Cumulative Event Counts')
+        ax.set_xlabel('Date')
+        ax.set_ylabel('Cumulative Count')
 
         return fig
 
@@ -136,7 +136,7 @@ class BarChart(MatplotlibViz):
 
     # Overwrite the parent class `visualization` method
     # Use the same parameters as the parent
-    def visualization(self, model, asset_id):
+    def visualization(self, asset_id, model):
 
         # Using the model and asset_id arguments
         # pass the `asset_id` to the `.model_data` method
@@ -177,7 +177,8 @@ class BarChart(MatplotlibViz):
         # pass the axis variable
         # to the `.set_axis_styling`
         # method
-        self.set_axis_styling(ax, border_color='black', font_color='black')
+        self.set_axis_styling(ax)
+        
         return fig
  
 # Create a subclass of combined_components/CombinedComponent
@@ -199,7 +200,7 @@ class NotesTable(DataTable):
 
     # Overwrite the `component_data` method
     # using the same parameters as the parent class
-    def component_data(self, model, entity_id):
+    def component_data(self, entity_id, model):
         
         # Using the model and entity_id arguments
         # pass the entity_id to the model's .notes 
@@ -237,7 +238,7 @@ class Report(CombinedComponent):
     children = [Header(), DashboardFilters(), Visualizations(), NotesTable()]
 
 # Initialize a fasthtml app 
-app = FastHTMLApp()
+app = FastHTML()
 
 # Initialize the `Report` class
 report = Report()

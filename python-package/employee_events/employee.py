@@ -3,7 +3,7 @@ from employee_events.query_base import QueryBase
 
 # Import dependencies needed for sql execution
 # from the `sql_execution` module
-from sql_execution import query, QueryMixin
+from employee_events.sql_execution import query, QueryMixin
 
 # Define a subclass of QueryBase
 # called Employee
@@ -27,13 +27,13 @@ class Employee(QueryBase):
         # 2. The employee's id
         # This query should return the data
         # for all employees in the database
-        query = f"""
+        sql = f"""
             SELECT
                 CONCAT(first_name, ' ', last_name) AS full_name,
                 employee_id
             FROM {self.name};
         """
-        return query(query).fetchall()
+        return self.query(sql)
     
 
     # Define a method called `username`
@@ -41,20 +41,19 @@ class Employee(QueryBase):
     # This method should return a list of tuples
     # from an sql execution
     def username(self, id):
-        
         # Query 4
         # Write an SQL query
         # that selects an employees full name
         # Use f-string formatting and a WHERE filter
         # to only return the full name of the employee
         # with an id equal to the id argument
-        query = f"""
+        sql = f"""
             SELECT
                 CONCAT(first_name, ' ', last_name) AS full_name
             FROM {self.name}
             WHERE employee_id = {id};
         """
-        return query(query).fetchall()
+        return self.query(sql)
 
 
     # Below is method with an SQL query
@@ -66,7 +65,7 @@ class Employee(QueryBase):
     # the sql query
     
     def model_data(self, id):
-        query = f"""
+        sql = f"""
                     SELECT SUM(positive_events) positive_events
                          , SUM(negative_events) negative_events
                     FROM {self.name}
@@ -74,4 +73,4 @@ class Employee(QueryBase):
                         USING({self.name}_id)
                     WHERE {self.name}.{self.name}_id = {id}
                 """
-        return self.pandas_query(query)
+        return self.pandas_query(sql)
