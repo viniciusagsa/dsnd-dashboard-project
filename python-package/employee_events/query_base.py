@@ -31,7 +31,7 @@ class QueryBase(QueryMixin):
         # Use f-string formatting to set the name
         # of id columns used for joining
         # order by the event_date column
-        query = f"""
+        sql_string = f"""
         SELECT 
             ee.event_date,
             SUM(ee.positive_events) as total_positive_events,
@@ -43,7 +43,7 @@ class QueryBase(QueryMixin):
         ORDER BY ee.event_date; 
         """
 
-        return self.pandas_query(query)
+        return self.pandas_query(sql_string)
     
 
     # Define a `notes` method that receives an id argument
@@ -57,13 +57,13 @@ class QueryBase(QueryMixin):
         # with f-string formatting
         # so the query returns the notes
         # for the table name in the `name` class attribute
-        query = f"""
+        sql_string = f"""
             SELECT
                 note_date,
                 note
             FROM notes
             JOIN {self.name} ON notes.{self.name}_id = {self.name}.{self.name}_id
-            WHERE {self.name}.{self.name}_id = {id}
-            ORDER BY note_date;
+            WHERE notes.{self.name}_id = {id}
+            ORDER BY note_date DESC;
         """
-        return self.pandas_query(query)
+        return self.pandas_query(sql_string)

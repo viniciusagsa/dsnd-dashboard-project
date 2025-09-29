@@ -63,7 +63,7 @@ class Header(BaseComponent):
         # Using the model argument for this method
         # return a fasthtml H1 objects
         # containing the model's name attribute
-        return H1(f'{model.name} Dashboard')
+        return H1(model.name)
           
 
 # Create a subclass of base_components/MatplotlibViz
@@ -115,7 +115,7 @@ class LineChart(MatplotlibViz):
         # the border color and font color to black. 
         # Reference the base_components/matplotlib_viz file 
         # to inspect the supported keyword arguments
-        self.set_axis_styling(ax)
+        self.set_axis_styling(ax, bordercolor="black", fontcolor="black")
         
         # Set title and labels for x and y axis
         ax.set_title('Cumulative Event Counts')
@@ -177,7 +177,7 @@ class BarChart(MatplotlibViz):
         # pass the axis variable
         # to the `.set_axis_styling`
         # method
-        self.set_axis_styling(ax)
+        self.set_axis_styling(ax, bordercolor="black", fontcolor="black")
         
         return fig
  
@@ -262,14 +262,14 @@ def dashboard():
 # an ID of `2`. 
 # parameterize the employee ID 
 # to a string datatype
-@app.get('/employee{r}')
-def employee(r):
+@app.get('/employee/{id:str}')
+def employee(id:str):
 
     # Call the initialized report
     # pass the ID and an instance
     # of the Employee SQL class as arguments
     # Return the result
-    return report(r.path_params['employee'], Employee())
+    return report(int(id), Employee())
 
 # Create a route for a get request
 # Set the route's path to receive a request
@@ -278,14 +278,14 @@ def employee(r):
 # an ID of `2`. 
 # parameterize the team ID 
 # to a string datatype
-@app.get('/team{r}')
-def team(r):
+@app.get('/team/{id:str}')
+def team(id:str):
 
     # Call the initialized report
     # pass the id and an instance
     # of the Team SQL class as arguments
     # Return the result
-    return report(r.path_params['team'], Team())
+    return report(int(id), Team())
 
 
 # Keep the below code unchanged!

@@ -24,20 +24,20 @@ class Team(QueryBase, QueryMixin):
         # the team_name and team_id columns
         # from the team table for all teams
         # in the database
-        query = f"""
+        sql_string = f"""
             SELECT
                 team_name,
                 team_id
             FROM {self.name};
         """
-        return self.query(query)
+        return self.query(sql_string)
     
 
     # Define a `username` method
     # that receives an ID argument
     # This method should return
     # a list of tuples from an sql execution
-    def team_name(self, id):
+    def username(self, id):
 
         # Query 6
         # Write an SQL query
@@ -45,13 +45,13 @@ class Team(QueryBase, QueryMixin):
         # Use f-string formatting and a WHERE filter
         # to only return the team name related to
         # the ID argument
-        query = f"""
+        sql_string = f"""
             SELECT
                 team_name
             FROM {self.name}
             WHERE team_id = {id};
         """
-        return self.query(query)
+        return self.query(sql_string)
 
 
     # Below is method with an SQL query
@@ -64,7 +64,7 @@ class Team(QueryBase, QueryMixin):
     #### YOUR CODE HERE
     def model_data(self, id):
 
-        query = f"""
+        sql_string = f"""
             SELECT positive_events, negative_events FROM (
                     SELECT employee_id
                          , SUM(positive_events) positive_events
@@ -76,4 +76,4 @@ class Team(QueryBase, QueryMixin):
                     GROUP BY employee_id
                    )
                 """
-        return self.pandas_query(query)
+        return self.pandas_query(sql_string)
